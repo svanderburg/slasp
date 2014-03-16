@@ -1,0 +1,6 @@
+{
+    "--title" : "slasp: SugarLess Asynchronous Structured Programming",
+    "--builtin-classes" : true,
+    "--no-source" : true,
+    "--guides" : "guides.json"
+}

@@ -1,0 +1,12 @@
+{
+  "name" : "slasp",
+  "version" : "0.0.1",
+  "description" : "SugarLess Asynchronous Structured Programming library with Object Oriented Programming Support",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/svanderburg/slasp.git"
+  },
+  "author" : "Sander van der Burg <svanderburg@gmail.com>",
+  "license" : "MIT",
+  "main" : "./lib/slasp"
+}

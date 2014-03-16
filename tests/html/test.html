@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+    <head><title>Stretching button</title></head>
+
+    <body>
+        <h1>Stretching button!</h1>
+
+        <button id="button" onclick="stretchButton();">Stretch</button>
+        <script type="text/javascript" src="../lib/slasp.js"></script>
+
+        <script type="text/javascript">
+        enabled = false;
+        
+        function updateButtonSizes() {
+            var grow = true;
+            var width = 100;
+            var height = 20;
+            var button = document.getElementById('button');
+
+            slasp.whilst(function(callback) { callback(null, enabled); }, function(callback) {
+                slasp.sequence([
+                    /* Update the button sizes */
+                    
+                    function(callback) {
+                        button.style.width = width + "px";
+                        callback(null);
+                    },
+                    
+                    function(callback) {
+                        button.style.height = height + "px";
+                        callback(null);
+                    },
+                    
+                    function(callback) {
+                        /* Adjust the button sizes */
+                        slasp.when(function(callback) { callback(null, grow); }, function(callback) {
+                            width++; height++;
+                            callback(null);
+                        }, function(callback) {
+                            width--; height--;
+                            callback(null);
+                        }, callback);
+                    },
+                    
+                    function(callback) {
+                        /* If the limits are reached, stretch in
+                         * the opposite direction
+                         */
+                        
+                        slasp.when(function(callback) { callback(null, width >= 150); }, function(callback) {
+                            grow = false;
+                            callback(null);
+                        }, function(callback) {
+                            slasp.when(function(callback) { callback(null, width <= 100); }, function(callback) {
+                                grow = true;
+                                callback(null);
+                            }, undefined, callback);
+                        }, callback);
+                    }
+                ], callback);
+            });
+        }
+
+        function stretchButton() {
+            if(enabled) {
+                enabled = false;
+            } else {
+                enabled = true;
+                updateButtonSizes();
+            }
+        }
+        </script>
+    </body>
+</html>
