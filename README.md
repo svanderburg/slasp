@@ -207,8 +207,8 @@ showcase:
 programs and their asynchronous counterparts using the function abstractions
 described earlier
 
-* The `html` folder shows a simple JavaScript program embedded in a web page that
-is not supposed to block the browser.
+* The `html` folder contains a simple JavaScript program embedded in a web page
+that is not supposed to block the browser.
 
 API documentation
 =================
