@@ -45,8 +45,8 @@ page. Then add the following script include to the HTML code of that web page:
 An example
 ==========
 Consider the following synchronous JavaScript code fragment that uses an
-implementation of the Gregory–Leibniz formula to approximate pi up to 5 decimal
-places:
+implementation of the [Gregory–Leibniz](http://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80)
+formula to approximate pi up to 5 decimal places:
 
     function printOnConsole(value) {
         console.log(value);
