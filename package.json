@@ -1,6 +1,6 @@
 {
   "name" : "slasp",
-  "version" : "0.0.1",
+  "version" : "0.0.2",
   "description" : "SugarLess Asynchronous Structured Programming library with Object Oriented Programming Support",
   "repository" : {
     "type" : "git",
