@@ -1,13 +1,5 @@
 var printOnConsole = require('../fundef/sync.js').printOnConsole;
-
-function generateWord(num) {
-    if(num < 0 || num > 9) {
-        throw "Cannot convert "+num+" into a word";
-    } else {
-        var words = [ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" ];
-        return words[num];
-    }
-}
+var generateWord = require('../fundef2/sync.js').generateWord;
 
 try {
     var word = generateWord(1);
@@ -15,7 +7,7 @@ try {
     word = generateWord(10);
     printOnConsole("We have a: "+word);
 } catch(err) {
-    printOnConsole("Some exception occured: "+err);
+    printOnConsole("Some exception occurred: "+err);
 } finally {
     printOnConsole("Bye bye!");
 }

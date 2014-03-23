@@ -1,16 +1,7 @@
 var printOnConsole = require('../fundef/async.js').printOnConsole;
-var slasp = require('../../../lib/slasp.js');
+var generateWord = require('../fundef2/async.js').generateWord;
 
-function generateWord(num, callback) {
-    process.nextTick(function() {
-        if(num < 0 || num > 9) {
-            callback("Cannot convert "+num+" into a word");
-        } else {
-            var words = [ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" ];
-            callback(null, words[num]);
-        }
-    });
-}
+var slasp = require('../../../lib/slasp.js');
 
 var word;
 
@@ -36,7 +27,7 @@ slasp.attempt(function(callback) {
         
     ], callback);
 }, function(err, callback) {
-    printOnConsole("Some exception occured: "+err, callback);
+    printOnConsole("Some exception occurred: "+err, callback);
 }, function() {
     printOnConsole("Bye bye!");
 });
