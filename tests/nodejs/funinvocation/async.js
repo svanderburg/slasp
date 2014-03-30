@@ -1,4 +1,4 @@
 var printOnConsole = require('../fundef/async.js').printOnConsole;
 
-printOnConsole("Hello world!", function() {
+printOnConsole("Hello world!", function(err) {
 });

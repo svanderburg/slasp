@@ -12,11 +12,8 @@ var name = "Sander";
 slasp.when(function(callback) {
     checkMe(name, callback);
 }, function(callback) {
-    slasp.sequence([
-        function(callback) {
-            printOnConsole("It's me!", callback);
-        },
-    ], callback);
+    printOnConsole("It's me!", callback);
 }, undefined, function(callback) {
     printOnConsole("That's all folks!", callback);
 });
+
