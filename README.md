@@ -76,8 +76,8 @@ consequence, a browser cannot handle a user's input event and the Node.js
 HTTP server cannot handle incoming connections.
 
 To resolve the blocking issue, JavaScript's `while` construct can be replaced by
-a `slasp.whilst` function invocation. Moreover, we can also the expressions and
-statements asynchronous by generating tick events:
+a `slasp.whilst` function invocation. Moreover, we can also make the expressions
+and statements asynchronous by generating tick events:
 
     var slasp = require('slasp');
     
