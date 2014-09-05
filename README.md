@@ -29,7 +29,7 @@ Concepts
 ========
 The JavaScript language implements a number of programming language concepts.
 The following table lists these concepts, how they are used while programming
-synchronous applications, and what their alternative should be used to make the
+synchronous applications, and what the alternative should be used to make the
 same concept asynchronous:
 
 Concept            | Synchronous                                         | Asynchronous
