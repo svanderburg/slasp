@@ -1,9 +1,14 @@
 slasp.js: SugarLess Asynchronous Structured Programming
 =======================================================
-This package is the result of a personal experiment and implements a module that
-provides artificially created equivalents to common JavaScript programming
-language constructs that are used to implement synchronous code. Most of these
-implement structured programming concepts.
+This package is the result of a personal experiment. From that experiment, I
+concluded that making a JavaScript software application asynchronous (i.e.
+non-blocking) requires someone to "forget" about commonly used synchronous programming
+language constructs and replace them by different ones supporting asynchronous
+programming.
+
+This package implements a module that provides artificially created asynchronous
+equivalents to common synchronous JavaScript programming language constructs.
+Most of these implement structured programming concepts.
 
 There are many software abstractions available to make asynchronous programming
 more convenient and to cope with the so-called "callback hell". This library is
@@ -19,6 +24,33 @@ asynchronous world, such as asynchronous if/while/do-while test conditions and
 asynchronous object constructors and methods.
 
 Sugar (of course) can still be built on top of this library.
+
+Concepts
+========
+The JavaScript language implements a number of programming language concepts.
+The following table lists these concepts, how they are used while programming
+synchronous applications, and what their alternative should be used to make the
+same concept asynchronous:
+
+Concept            | Synchronous                                         | Asynchronous
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+Function interface | `function f(a) { ... }`                             | `function f(a, callback) { ... }`
+Return statement   | `return val;`                                       | `callback(null, val);`
+Sequence           | `a; b;`                                             | `slasp.sequence([function (cb) { a; cb(); }, function(b) { b; cb(); } ]);`
+if-then-else       | `if c() t() else e();`                              | `slasp.when(c, t, e);`
+switch             | `switch(c()) { case "a": f(); break; }`             | `slasp.circuit(c, function(r, cb) { switch(r) { ... } });`
+Recursion          | `function fun() { fun(); }`                         | `function fun(cb) { setImmediate(function() { fun(cb); });`
+while              | `while(c()) { s(); }`                               | `slasp.whilst(c, s);`
+doWhile            | `do { s(); } while(c());`                           | `slasp.doWhilst(s, c);`
+for                | `for(s(); c(); inc()) { stmt(); }`                  | `slasp.from(s, c, inc, stmt);`
+for-in             | `for(var a in arr()) { stmt(); }`                   | `slasp.fromEach(arr, function(a, callback) { stmt(callback); });` 
+throw              | `throw err;`                                        | `callback(err);`
+try-catch-finally  | `try { a(); } catch(err) { e(); } finally { f(); }` | `slasp.attempt(a, function(err, callback) { funErr(cb); }, f);`
+constructor        | `function Cons(a) { this.a = a; }`                  | `function Cons(self, a, callback) { self.a = a; callback(null); }`
+new                | `new Cons(a);`                                      | `slasp.novel(Cons, a, callback);`
+
+For most of the concepts listed above, a function abstraction is needed that is
+provided by this library.
 
 Usage
 =====
@@ -68,12 +100,9 @@ formula to approximate pi up to 5 decimal places:
         sign *= -1;
     }
 
-Although the code above seem to do its job, it also takes a bit of time (i.e.
-a couple of seconds) to complete.
-
-While the code is executing it blocks the environment's event loop. As a
-consequence, a browser cannot handle a user's input event and the Node.js
-HTTP server cannot handle incoming connections.
+Although the code above seem to do its job, it also takes a bit of time to
+complete. In this time window the environment such as a web browser or web server
+is blocked, because the event loop cannot process events.
 
 To resolve the blocking issue, JavaScript's `while` construct can be replaced by
 a `slasp.whilst` function invocation. Moreover, we can also make the expressions
