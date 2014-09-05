@@ -49,8 +49,8 @@ try-catch-finally  | `try { a(); } catch(err) { e(); } finally { f(); }` | `slas
 constructor        | `function Cons(a) { this.a = a; }`                  | `function Cons(self, a, callback) { self.a = a; callback(null); }`
 new                | `new Cons(a);`                                      | `slasp.novel(Cons, a, callback);`
 
-For most of the concepts listed above, a function abstraction is needed that is
-provided by this library.
+For most of the concepts listed above, a function abstraction is needed to make
+an application asynchronous. These abstractions are provided by this library.
 
 Usage
 =====
