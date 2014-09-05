@@ -33,7 +33,7 @@ synchronous applications, and what their alternative should be used to make the
 same concept asynchronous:
 
 Concept            | Synchronous                                         | Asynchronous
------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------|-----------------------------------------------------|---------------------------------------------------------------------------
 Function interface | `function f(a) { ... }`                             | `function f(a, callback) { ... }`
 Return statement   | `return val;`                                       | `callback(null, val);`
 Sequence           | `a; b;`                                             | `slasp.sequence([function (cb) { a; cb(); }, function(b) { b; cb(); } ]);`
