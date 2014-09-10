@@ -29,8 +29,8 @@ Concepts
 ========
 The JavaScript language implements a number of programming language concepts.
 The following table lists these concepts, how they are used while programming
-synchronous applications, and what the alternative should be used to make the
-same concept asynchronous:
+synchronous applications, and what alternatives should be used to make the same
+concepts asynchronous:
 
 Concept            | Synchronous                                         | Asynchronous
 -------------------|-----------------------------------------------------|---------------------------------------------------------------------------
@@ -39,13 +39,13 @@ Return statement   | `return val;`                                       | `call
 Sequence           | `a; b;`                                             | `slasp.sequence([function (cb) { a; cb(); }, function(b) { b; cb(); } ]);`
 if-then-else       | `if c() t() else e();`                              | `slasp.when(c, t, e);`
 switch             | `switch(c()) { case "a": f(); break; }`             | `slasp.circuit(c, function(r, cb) { switch(r) { ... } });`
-Recursion          | `function fun() { fun(); }`                         | `function fun(cb) { setImmediate(function() { fun(cb); });`
+Recursion          | `function fun() { fun(); }`                         | `function fun(cb) { setImmediate(function() { fun(cb); }) };`
 while              | `while(c()) { s(); }`                               | `slasp.whilst(c, s);`
 doWhile            | `do { s(); } while(c());`                           | `slasp.doWhilst(s, c);`
 for                | `for(s(); c(); inc()) { stmt(); }`                  | `slasp.from(s, c, inc, stmt);`
-for-in             | `for(var a in arr()) { stmt(); }`                   | `slasp.fromEach(arr, function(a, callback) { stmt(callback); });` 
+for-in             | `for(var a in arr()) { stmt(); }`                   | `slasp.fromEach(arr, function(a, callback) { stmt(callback); });`
 throw              | `throw err;`                                        | `callback(err);`
-try-catch-finally  | `try { a(); } catch(err) { e(); } finally { f(); }` | `slasp.attempt(a, function(err, callback) { funErr(cb); }, f);`
+try-catch-finally  | `try { a(); } catch(err) { e(); } finally { f(); }` | `slasp.attempt(a, function(err, callback) { e(callback); }, f);`
 constructor        | `function Cons(a) { this.a = a; }`                  | `function Cons(self, a, callback) { self.a = a; callback(null); }`
 new                | `new Cons(a);`                                      | `slasp.novel(Cons, a, callback);`
 
