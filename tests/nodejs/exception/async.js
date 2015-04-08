@@ -22,7 +22,7 @@ slasp.attempt(function(callback) {
         
         function(callback, result) {
             word = result;
-            printOnConsole("We have a: "+word);
+            printOnConsole("We have a: "+word, callback);
         }
         
     ], callback);
