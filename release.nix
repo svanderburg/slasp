@@ -6,47 +6,26 @@
 let
   pkgs = import nixpkgs {};
   
-  version = builtins.readFile ./version;
+  version = (builtins.fromJSON ./package.json).version;
   
-  determineTarballPath = tarball: {
-    name = "slasp-tarball";
-    outPath = "${tarball}/tarballs/slasp-${version}.tgz";
+  jobset = import ./default.nix {
+    inherit pkgs;
+    system = builtins.currentSystem;
   };
-
+  
   jobs = rec {
-    tarball = pkgs.releaseTools.sourceTarball {
-      name = "slasp-tarball";
-      inherit version;
-      src = ./.;
-      inherit officialRelease;
-      distPhase = ''
-        mkdir -p package
-        cd package
-        cp -av $src/* .
-        cd ..
-        tar cfvz slasp-${version}.tgz package
-        mkdir -pv $out/tarballs
-        cp *.tgz $out/tarballs
-      '';
-    };
+    inherit (jobset) tarball;
   
-    build = pkgs.lib.genAttrs systems (system:
-      let
+    package = pkgs.lib.genAttrs systems (system:
+      (import ./default.nix {
         pkgs = import nixpkgs { inherit system; };
-      in
-      pkgs.nodePackages.buildNodePackage {
-        name = "slasp-${version}";
-        src = [ (determineTarballPath tarball) ];
-  
-        passthru.names = [ "slasp" ];
-        deps = [
-          pkgs.nodePackages.optparse
-        ];
-      });
+        inherit system;
+      }).package
+    );
   
     doc = pkgs.stdenv.mkDerivation {
       name = "slasp-docs-${version}";
-      src = determineTarballPath tarball;
+      src = "${tarball}/tarballs/slasp-${version}.tgz";
     
       buildInputs = [ pkgs.rubyLibs.jsduck ];
       buildPhase = "make duck";
@@ -60,11 +39,11 @@ let
     tests = pkgs.lib.genAttrs systems (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        slasp = builtins.getAttr system build;
+        slasp = builtins.getAttr system package;
       in
       pkgs.releaseTools.nixBuild {
         name = "slasp-tests-${version}";
-        src = determineTarballPath tarball;
+        src = "${tarball}/tarballs/slasp-${version}.tgz";
         buildInputs = [
           pkgs.nodejs
           slasp
