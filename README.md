@@ -65,14 +65,18 @@ directory with the NPM package manager by running:
 
 In the code, the module can be imported with:
 
-    var slasp = require('slasp');
+```javascript
+var slasp = require('slasp');
+```
 
 Browser
 -------
 For usage in the browser copy `lib/slasp.js` into a folder accessible by a web
 page. Then add the following script include to the HTML code of that web page:
 
-    <script type="text/javascript" src="slasp.js"></script>
+```html
+<script type="text/javascript" src="slasp.js"></script>
+```
 
 An example
 ==========
@@ -80,25 +84,27 @@ Consider the following synchronous JavaScript code fragment that uses an
 implementation of the [Gregory–Leibniz](http://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80)
 formula to approximate pi up to 5 decimal places:
 
-    function printOnConsole(value) {
-        console.log(value);
-    }
+```javascript
+function printOnConsole(value) {
+    console.log(value);
+}
 
-    function checkTreshold() {
-        return (approx.toString().substring(0, 7) != "3.14159");
-    }
+function checkTreshold() {
+    return (approx.toString().substring(0, 7) != "3.14159");
+}
 
-    var approx = 0;
-    var denominator = 1;
-    var sign = 1;
+var approx = 0;
+var denominator = 1;
+var sign = 1;
 
-    while(checkTreshold()) {
-        approx += 4 * sign / denominator;
-        printOnConsole("Current approximation is: "+approx);
-        
-        denominator += 2;
-        sign *= -1;
-    }
+while(checkTreshold()) {
+    approx += 4 * sign / denominator;
+    printOnConsole("Current approximation is: "+approx);
+    
+    denominator += 2;
+    sign *= -1;
+}
+```
 
 Although the code above seem to do its job, it also takes a bit of time to
 complete. In this time window the environment such as a web browser or web server
@@ -108,46 +114,48 @@ To resolve the blocking issue, JavaScript's `while` construct can be replaced by
 a `slasp.whilst` function invocation. Moreover, we can also make the expressions
 and statements asynchronous by generating tick events:
 
-    var slasp = require('slasp');
-    
-    function printOnConsole(value, callback) {
-        process.nextTick(function() {
-            console.log(value);
-        });
-    }
+```javascript
+var slasp = require('slasp');
 
-    function checkTreshold(callback) {
-        process.nextTick(function() {
-            callback(null, approx.toString().substring(0, 7) != "3.14159");
-        });
-    }
-
-    var approx = 0;
-    var denominator = 1;
-    var sign = 1;
-
-    slasp.whilst(checkTreshold, function(callback) {
-        slasp.sequence([
-            function(callback) {
-                approx += 4 * sign / denominator;
-                callback(null);
-            },
-        
-            function(callback) {
-                printOnConsole("Current approximation is: "+approx, callback);
-            },
-        
-            function(callback) {
-                denominator += 2;
-                callback(null);
-            },
-        
-            function(callback) {
-                sign *= -1;
-                callback(null);
-            }
-        ], callback);
+function printOnConsole(value, callback) {
+    process.nextTick(function() {
+        console.log(value);
     });
+}
+
+function checkTreshold(callback) {
+    process.nextTick(function() {
+        callback(null, approx.toString().substring(0, 7) != "3.14159");
+    });
+}
+
+var approx = 0;
+var denominator = 1;
+var sign = 1;
+
+slasp.whilst(checkTreshold, function(callback) {
+    slasp.sequence([
+        function(callback) {
+            approx += 4 * sign / denominator;
+            callback(null);
+        },
+        
+        function(callback) {
+            printOnConsole("Current approximation is: "+approx, callback);
+        },
+        
+        function(callback) {
+            denominator += 2;
+            callback(null);
+        },
+        
+        function(callback) {
+            sign *= -1;
+            callback(null);
+        }
+    ], callback);
+});
+```
 
 The above expression does not block an environment's event loop allowing a
 Node.js HTTP server to still handle incoming connections and a browser to still
