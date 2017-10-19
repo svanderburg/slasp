@@ -100,7 +100,7 @@ var sign = 1;
 while(checkTreshold()) {
     approx += 4 * sign / denominator;
     printOnConsole("Current approximation is: "+approx);
-    
+
     denominator += 2;
     sign *= -1;
 }
@@ -139,16 +139,16 @@ slasp.whilst(checkTreshold, function(callback) {
             approx += 4 * sign / denominator;
             callback(null);
         },
-        
+
         function(callback) {
             printOnConsole("Current approximation is: "+approx, callback);
         },
-        
+
         function(callback) {
             denominator += 2;
             callback(null);
         },
-        
+
         function(callback) {
             sign *= -1;
             callback(null);
@@ -250,10 +250,7 @@ that is not supposed to block the browser.
 API documentation
 =================
 This package includes API documentation, which can be generated with
-[JSDuck](https://github.com/senchalabs/jsduck). The Makefile in this package
-contains a `duck` target to generate it and produces the HTML files in `build/`:
-
-    $ make duck
+[JSDoc](http://usejsdoc.org).
 
 License
 =======

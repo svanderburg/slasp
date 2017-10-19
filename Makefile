@@ -1,11 +1,4 @@
-JSDUCK = jsduck
 MOCHA = mocha
-
-duck:
-	mkdir -p build
-	$(JSDUCK) --config=doc/config.json --output=build `find lib -name \*.js`
-
-doc: duck # DUH!!
 
 clean:
 	rm -rf build
