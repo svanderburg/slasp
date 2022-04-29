@@ -25,6 +25,16 @@ asynchronous object constructors and methods.
 
 Sugar (of course) can still be built on top of this library.
 
+Disclaimer
+==========
+This package is effectively obsolete with the introduction of various new
+concepts in the ECMAScript 6 standard, such as Promises, `async` and `await`.
+
+It will be kept available to support old projects. For new projects, simply
+using `await` to fetch the result of an asynchronous function (returning) a
+`Promise` should suffice. As a result, the language concepts I was referring
+can be used without any problems.
+
 Concepts
 ========
 The JavaScript language implements a number of programming language concepts.
